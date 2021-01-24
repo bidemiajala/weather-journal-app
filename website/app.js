@@ -7,15 +7,26 @@ let key = '661daa7377189bfe425b6af1f07ac279';
 let d = new Date();
 let newDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
 
+
+
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', performAction);
+document.getElementById('clear').addEventListener('click', clearFields);
+
+function clearFields() {
+    document.getElementById('zip').value = '';
+    document.getElementById('feelings').value = '';
+    document.getElementById('date').innerHTML = '';
+    document.getElementById('temp').innerHTML = '';
+    document.getElementById('content').innerHTML = '';
+}
 
 // Function called by event listener
 function performAction(e) {
-    const postCode = document.getElementById('zip').value;
-    const feelings = document.getElementById('feelings').value;
     console.log(newDate);
-    getTemperature(baseURL, postCode, key)
+    const zipCode = document.getElementById('zip').value;
+    const feelings = document.getElementById('feelings').value;
+    getTemperature(baseURL, zipCode, key)
         .then(function (data) {
             // Add data to POST request
             postData('http://localhost:3000/addWeatherData', { temperature: data.main.temp, date: newDate, user_response: feelings })
